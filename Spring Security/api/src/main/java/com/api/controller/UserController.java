@@ -11,20 +11,21 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    private final String url = "/users";
+
+    @GetMapping(url)
     public  ResponseEntity<List<User>> getAllUsers(){
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping
-    public ResponseEntity saveUser(@RequestBody @Valid UserDto userDto){
+    @PostMapping(url)
+    public ResponseEntity<UserDto> saveUser(@RequestBody @Valid UserDto userDto){
         userService.save(userDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userDto);
     }
 }

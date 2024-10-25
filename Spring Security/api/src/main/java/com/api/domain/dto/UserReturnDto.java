@@ -3,12 +3,10 @@ package com.api.domain.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public record UserDto(
+public record UserReturnDto(
         @NotBlank
         @Email
         String email,
-        @NotBlank
-        String password,
         @NotBlank
         String firstName,
         @NotBlank

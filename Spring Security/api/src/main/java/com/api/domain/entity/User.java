@@ -1,6 +1,7 @@
 package com.api.domain.entity;
 
 import com.api.domain.dto.UserDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.Data;
@@ -14,16 +15,20 @@ import java.util.List;
 
 @Entity(name="Users")
 @Table(name="users")
-@NoArgsConstructor // Implements constructor only: new User(); don't user AllArgsContructor
-@Data // Implements GET's and SET's
+@NoArgsConstructor
+@Data
 public class User implements UserDetails {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
     private String email;
+    @JsonIgnore
     private String password;
-    @Column(name = "created_on") // use only to convert Camel Case (createdOn) to Snake Case (created_on)
+    @Column(name = "created_on")
     private LocalDate createdOn;
     @Column(name = "updated_on")
     private LocalDate updatedOn;
@@ -42,6 +47,9 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        StringBuilder name = new StringBuilder(this.firstName);
+        name.append(" ");
+        name.append(this.lastName);
+        return name.toString();
     }
 }
