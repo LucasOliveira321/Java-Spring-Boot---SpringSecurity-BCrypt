@@ -75,3 +75,52 @@
 ```bash
 mvn clean verify
 ```
+
+<h3>Makefile</h3>
+<p>Adicionei um arquivo chamado Makefile para realizar a automatização da tarefa de criação do arquivo .jar, contrução da imagem do Dockerfile e rodar o docker compose da aplicação, utilizando o comando</p>
+
+```bash
+make run
+```
+
+<p>Para parar a tarefa pode simplesmente apertar 'Crtl+C' ou o comando:</p>
+
+```bash
+make stop
+```
+
+<p>Obs: Este comando remove o container criado e não persiste os dados no banco</p>
+<p>Para saber mais sobre Makefile: https://www.gnu.org/software/make/manual/make.html</p>
+
+<h3>Heroku</h3>
+<p>Para fazer o deploy com o Heroku, é preciso criar a conta no site 'https://dashboard.heroku.com' e fiz o login no terminal usando o comando:</p>
+
+```bash
+heroku login
+```
+
+<p>Para realizar a autenticação utilizando um app de autenticador usei o comando: </p>
+
+```bash
+heroku auth:token
+```
+
+<p>Após isso realizei o comando: </p>
+
+```bash
+echo $(heroku auth:token) | docker login --username=_ --password-stdin registry.heroku.com
+```
+<p>Para criar a aplicação no heroku utiliza o comando (Obs: Precisa ser um nome único que não exista na plataforma): </p>
+
+```bash
+heroku create api-manager-dev
+```
+
+<p>Além da aplicação, precisamos criar o banco de dados. Estamos trabalhando com PostgreSQL e ele será o nosso banco de dados. O Heroku tem uma configuração própria para o suporte do PostgreSQL, por isso, não vamos utilizá-lo no Docker (como fizemos localmente). Sendo assim, basta rodar o comando:</p>
+
+```bash
+heroku addons:create heroku-postgresql:hobby-dev -a nome-do-app
+```
+<p>ou seja, heroku addons, que se refere aos vários plugins internos, e create heroku-postgresql:hobby-dev, porque pediremos a ele que crie um plugin vinculado à aplicação. Este plugin é o do PostgreSQL, onde ele criará uma base de dados. Há também a opção hobby-devque é um banco de dados com limitações, mas gratuito. Clicamos "Enter" e ele vai baixar, instalar e configurar nosso banco de dados PostgreSQL disponibilizado na aplicação.</p>
+
+
