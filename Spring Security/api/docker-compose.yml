@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: manager
+    ports:
+      - "5440:5432"
+    volumes:
+      - db-volume:/var/lib/postgresql/data
+  api:
+    image: api/manager
+    environment:
+      # ESTA CONFIGURAÇÃO DB_HOST INFORMA QUE A BASE DE DADOS ESTÁ AGORA NO database DA IMAGEM (LINHA 3) NÃO MAIS NO LOCALHOST
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: manager
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  db-volume:
